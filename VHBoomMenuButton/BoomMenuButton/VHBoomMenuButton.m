@@ -513,7 +513,9 @@ static NSString *const kFadeViewAnimation = @"kFadeViewAnimation";
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     UITouch *anyTouch = [touches anyObject];
-    if (self.draggable && self.ableToStartDragging)
+    CGPoint touchLocation = [anyTouch locationInView:anyTouch.view];
+    // 修复按钮点击不灵敏问题，http://sunhuasong.com/2016/04/05/IOS-3DTouch-%E7%82%B9%E5%87%BB%E5%92%8C%E6%8B%96%E5%8A%A8%E5%86%B2%E7%AA%81/
+    if (!CGPointEqualToPoint(touchLocation, CGPointMake(self.startPositionX, self.startPositionY)) && self.draggable && self.ableToStartDragging)
     {
         self.isDragging = YES;
         CGPoint touchLocationInParent = [anyTouch locationInView:self.superview];
